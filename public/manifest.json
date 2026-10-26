@@ -1,19 +1,21 @@
 {
   "name": "Prépa EPSO AD5 - Horizon",
   "short_name": "EPSO AD5",
-  "description": "Application de révision interactive pour le concours EPSO AD5 avec quiz, fiches et flashcards générés par IA.",
-  "start_url": "/Quizz-Interatif/",
-  "scope": "/Quizz-Interatif/",
+  "description": "Tests de raisonnement, anglais, UE, compétences numériques et parcours de maths, disponibles hors connexion.",
+  "id": "./",
+  "start_url": "./#tests",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f8f9fd",
   "theme_color": "#2f647e",
   "orientation": "any",
   "icons": [
     {
-      "src": "icon-512.jpg",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
-    }
+    },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
   ]
 }
