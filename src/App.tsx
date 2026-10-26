@@ -7,6 +7,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import * as pdfjsLib from 'pdfjs-dist';
 import { cn } from './lib/utils';
+import MathCourse from './math/MathCourse';
+import TrainingHub from './training/TrainingHub';
+import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import {
   FACT_SHEET_TOPICS,
   EU_SUBTYPES,
@@ -17,7 +20,7 @@ import {
   ESSAY_SKILL
 } from './skills';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
 interface DocumentFolder {
   id: string;
@@ -214,6 +217,7 @@ function PdfCanvasViewer({ file, url }: { file?: File | Blob, url?: string }) {
 
 export default function App() {
   const [appState, setAppState] = useState<AppState>(() => {
+    if (['#maths', '#tests'].includes(window.location.hash)) return 'UPLOAD';
     const saved = localStorage.getItem('qcm_app_state') as AppState;
     if (saved && saved !== 'PROCESSING') return saved;
     return 'UPLOAD';
@@ -635,9 +639,11 @@ export default function App() {
     set('savedQuizzes', savedQuizzes).catch(console.error);
   }, [savedQuizzes, isDbLoaded]);
 
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'qcm' | 'english' | 'fact_sheets' | 'library'>(() => {
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'maths' | 'tests' | 'qcm' | 'english' | 'fact_sheets' | 'library'>(() => {
+    if (window.location.hash === '#maths') return 'maths';
+    if (window.location.hash === '#tests') return 'tests';
     const saved = localStorage.getItem('qcm_active_tab') as any;
-    if (saved) return saved;
+    if (['dashboard', 'maths', 'tests', 'qcm', 'english', 'fact_sheets', 'library'].includes(saved)) return saved;
     return 'dashboard';
   });
 
@@ -3934,7 +3940,7 @@ Génère une fiche de révision ciblée structurée avec les concepts clés à r
         )}
         {appState === 'UPLOAD' && (
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
+            {!['maths', 'tests'].includes(activeTab) && <div className="text-center mb-10">
               <span className="inline-block py-1 px-4 rounded-full bg-[#76a9c5]/15 text-[#003e54] dark:bg-[#2f647e]/30 dark:text-[#9acdeb] text-xs font-bold tracking-widest uppercase border border-[#2f647e]/20 mb-4 shadow-2xs">
                 Concours Administrateur EPSO AD5
               </span>
@@ -3944,11 +3950,13 @@ Génère une fiche de révision ciblée structurée avec les concepts clés à r
               <p className="text-base sm:text-lg text-[#41484c] dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
                 Entraînez-vous sur les épreuves clés (Raisonnement cognitif, Connaissance de l'UE, DigComp, Anglais) avec fiches synthétiques et générateur IA sur vos documents.
               </p>
-            </div>
+            </div>}
 
-            <div className="flex items-center justify-center max-w-3xl mx-auto bg-[#eceef1] dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 mb-8 overflow-x-auto hide-scrollbar gap-1.5 shadow-2xs">
+            <div className="flex flex-wrap items-center justify-center max-w-5xl mx-auto bg-[#eceef1] dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 mb-8 gap-1.5 shadow-2xs">
               {[
                 { id: 'dashboard', label: 'Accueil' },
+                { id: 'tests', label: 'Tests prêts' },
+                { id: 'maths', label: 'Parcours Maths · 9 novembre' },
                 { id: 'qcm', label: 'QCM EPSO AD5' },
                 { id: 'english', label: "Programme d'Anglais" },
                 { id: 'fact_sheets', label: 'Fiches Thématiques' },
@@ -3970,6 +3978,8 @@ Génère une fiche de révision ciblée structurée avec les concepts clés à r
             </div>
 
             <div className="mb-12">
+              {activeTab === 'maths' && <MathCourse />}
+              {activeTab === 'tests' && <TrainingHub />}
               {activeTab === 'qcm' && (
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
@@ -5861,6 +5871,12 @@ Génère une fiche de révision ciblée structurée avec les concepts clés à r
 
             {activeTab === 'dashboard' && (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <button onClick={() => setActiveTab('tests')} className="w-full text-left mb-5 rounded-2xl p-6 bg-[#e6f0ec] text-[#183e48] border border-[#bed2c9] flex items-center justify-between gap-4 hover:bg-[#d8e9e1] transition-colors">
+                  <span><span className="block text-xs font-bold uppercase tracking-wider mb-2">Sur ordinateur et tablette</span><span className="block text-2xl font-serif mb-2">Mes tests prêts à lancer</span><span className="block text-sm">Numérique, verbal, abstrait, UE, compétences numériques et anglais. Sans clé IA.</span></span><ChevronRight className="w-6 h-6 shrink-0" />
+                </button>
+                <button onClick={() => setActiveTab('maths')} className="w-full text-left mb-8 rounded-2xl p-6 bg-[#183e48] text-white flex items-center justify-between gap-4 hover:bg-[#245360] transition-colors">
+                  <span><span className="block text-xs font-bold uppercase tracking-wider text-emerald-200 mb-2">Objectif 9 novembre 2026</span><span className="block text-2xl font-serif mb-2">Votre parcours de maths EPSO</span><span className="block text-sm text-slate-200">18 chapitres, un diagnostic, des corrections pas à pas et des simulations de 20 minutes.</span></span><ChevronRight className="w-6 h-6 shrink-0" />
+                </button>
                 {savedQuizzes.length > 0 && (
                   <div className="mb-12">
                     <div className="flex items-center gap-2 mb-4">
