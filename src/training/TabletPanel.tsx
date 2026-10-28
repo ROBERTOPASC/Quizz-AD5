@@ -45,7 +45,8 @@ export default function TabletPanel({ inSession = false }: { inSession?: boolean
         <ol><li>Ouvrez le lien dans <strong>Chrome sur la tablette</strong>, avec Internet.</li><li>Touchez <strong>Installer l’application</strong>. Si la fenêtre d’installation n’apparaît pas, utilisez le menu <strong>⋮ → Ajouter à l’écran d’accueil → Installer</strong> si proposé.</li><li>Attendez le message « Tests et maths disponibles hors connexion ».</li><li>Retrouvez ensuite l’icône <strong>EPSO AD5</strong> sur votre écran d’accueil : elle lance l’application dans sa propre fenêtre.</li></ol>
         {pwa.installed && <p>L’icône est déjà installée : utilisez-la pour quitter l’affichage dans le navigateur.</p>}
       </>}
-      <p>Les tests prêts et le parcours de maths fonctionnent sans clé IA. La génération IA à partir de vos documents demande Internet et votre clé personnelle.</p>
+      <p>Une fois le mode hors connexion prêt, vous pouvez lancer de nouvelles séries, lire les corrections et utiliser la calculatrice sans Internet. Les exercices de maths et les suites abstraites sont générés sur votre appareil ; les autres domaines utilisent les questions déjà incluses.</p>
+      <p>Les fonctions de génération par IA (QCM, fiches, analyse de documents…) demandent une connexion à votre service IA. Les tests prêts et le parcours de maths ne demandent aucune clé IA.</p>
       <p>Le suivi reste dans ce navigateur. Utilisez « Exporter mon suivi » pour le transférer entre l’ordinateur et la tablette ou le sauvegarder.</p>
     </details>
   </aside>;

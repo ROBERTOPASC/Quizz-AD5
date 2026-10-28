@@ -9,6 +9,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { cn } from './lib/utils';
 import MathCourse from './math/MathCourse';
 import TrainingHub from './training/TrainingHub';
+import BasicCalculator from './calculator/BasicCalculator';
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import {
   FACT_SHEET_TOPICS,
@@ -3222,7 +3223,7 @@ Génère une fiche de révision ciblée structurée avec les concepts clés à r
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-28">
         {showSettings && (
           <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
@@ -7139,6 +7140,7 @@ Génère une fiche de révision ciblée structurée avec les concepts clés à r
           </div>
         )}
       </main>
+      <BasicCalculator />
     </div>
   );
 }
